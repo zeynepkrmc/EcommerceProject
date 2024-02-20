@@ -1,0 +1,47 @@
+﻿@using EcommerceProject2.Models;
+@model IEnumerable<Products>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    ViewBag.Title = "SearchProducts";
+}
+
+<div>
+    <h2>Search Results</h2>
+
+    @if (Model != null && Model.Any())
+    {
+        foreach (var product in Model)
+        {
+            <div class="col-md-4">
+                <div class="card, product">
+                    <img class="card-img-top" src="../@product.image" alt="@product.Product_name" height="200">
+                    <div class="card-body">
+                        <h4 class="card-title" style="font-size:23px">
+                            <a href="/Home/Details/@product.Product_id"> @product.Product_name</a>
+                        </h4>
+                        <p class="card-text">
+                            @product.Product_Desc
+                        </p>
+                    </div>
+                    <div class="card-footer" style="font-size: 16px">
+                        Fiyat:$ @product.price
+                    </div>
+                    <div class="card-footer">
+                        <br />
+                        <form method="post" action="@Url.Action("AddToOrderCart", "Cart", new { productId = product.Product_id, price = product.price, amount = 1 })">
+                            <input type="hidden" name="size" value="small" />
+                            <button type="submit" class="fa fa-shopping-cart" style="font-size:20px; color:white; background-color:forestgreen; border-color:forestgreen"> Add To Cart</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No search results available.</p>
+    }
+</div>
+

@@ -1,0 +1,182 @@
+﻿@model EcommerceProject2.Models.Products
+
+@{
+    ViewBag.Title = "Details";
+
+}
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-rREpPtu8d1ZiCYSFJ1Bn7I1SaMmST/EM8mH9DjIu2exB6lDaxj1e0R3eY1nO2dca" crossorigin="anonymous">
+    <style>
+        .image {
+            border: 1px solid #E8E3E4;
+            display: inline-block;
+        }
+
+        .review {
+            border-style: solid;
+            border-width: 2px;
+        }
+
+        .rating {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="row">
+
+        <div class="col-md-6">
+            <br />
+            <img src="~/@Model.image" class="img-fluid rounded " height="400">
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>@Model.Product_name</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <span class="badge badge-primary" style="font-size:15px">In Stock</span>
+                    <span class="product-number">#2365656</span>
+                    <br />
+                    <br />
+
+                    @if (!string.IsNullOrEmpty(ViewBag.StockMessage))
+                    {
+                        <div class="alert alert-warning mt-2" role="alert">
+                            @ViewBag.StockMessage
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(ViewBag.WarningMessage))
+                    {
+                        <div class="alert alert-warning mt-2" role="alert">
+                            @ViewBag.WarningMessage
+                        </div>
+                    }
+
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-12">
+                    <div id="description" style="font-size:23px">
+                        @Model.Product_Desc
+                    </div>
+                </div>
+            </div>
+            <div>
+                <!--BEDEN ÖLÇÜLERİ-->
+                <div class="form-group">
+                    <label for="size">Select Size:</label>
+                    <select class="form-control" id="size" name="size">
+                        <option value="NoOption">No Option</option>
+                        <option value="Small">Small</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Large">Large</option>
+                        <!-- Add more size options as needed -->
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-4">
+                    <h4>
+                        Reviews:
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                        <span class="badge badge-success">@ViewBag.TotalReviews</span>
+                        <span class=" badge badge-success">@TempData["AverageRating"]</span>
+                    </h4>
+                </div>
+
+            </div>
+            <div class="row mt-3">
+                <br />
+                <div class="col-md-12" style="font-size:25px">
+                    <span id="product-price">@Model.price $</span>
+                </div>
+            </div>
+            <div class="row mt-2">
+
+                <div class="col-md-12">
+                    <br />
+                    <form method="post" action="@Url.Action("AddToOrderCart", "Cart")">
+                        <input type="hidden" name="customerId" value="@Convert.ToInt32(Session["Customer_id"].ToString())">
+                        <input type="hidden" name="productId" value="@Model.Product_id">
+                        <input type="hidden" name="price" value="@Model.price">
+                        <input type="hidden" name="amount" value="1">
+                        <input type="hidden" name="size" id="hiddenSize" value="">
+                        <button type="submit" class="btn btn-danger">Add To Cart</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--YORUM VE DEĞERLENDİRME -->
+        <div class="row mt-2">
+            <div class="col-md-12">
+                <h3>Reviews</h3>
+                <!-- Form for submitting reviews -->
+                <div>
+                    <!-- Display existing reviews -->
+                    @if (Model.Reviews != null)
+                    {
+
+                        foreach (var review in Model.Reviews)
+                        {
+
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div>
+                                            <h6 class="card-subtitle mb-1 text-muted"><img src="~/Content/Images/Admin.png" alt="Profile Image" class="rounded-circle mr-2" width="30" height="30"> @review.Customer.Customer_Email</h6>
+                                            <span class="badge badge-info" style="font-size: 11px;">Rating: @review.Rating</span>
+                                        </div>
+                                    </div>
+                                    <p class="card-text mt-2" style=" font-size: 16px;">@review.Comment</p>
+                                </div>
+                                <hr class="my-2"> <!-- Eklenen çizgi -->
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p>No reviews available for this product.</p>
+                    }
+                </div>
+                <form method="post" action="@Url.Action("SubmitReview", "Products")">
+                    <input type="hidden" name="productId" value="@Model.Product_id">
+                    <div class="form-group">
+                        <label for="rating">Give a rating:</label>
+                        <input type="number" class="form-control" id="rating" name="rating" min="1" max="5" step="1">
+                        <input type="hidden" id="hiddenRating" name="rating" value="0" />
+                    </div>
+                    <div class="form-group">
+                        <label for="comment">Leave a review:</label>
+                        <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit Review</button>
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#size').change(function () {
+                var selectedSize = $(this).val();
+                $('#hiddenSize').val(selectedSize);
+                console.log('Selected Size:', selectedSize); // Add this line for debugging
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+

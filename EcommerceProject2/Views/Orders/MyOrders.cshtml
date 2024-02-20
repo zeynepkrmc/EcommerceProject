@@ -1,0 +1,44 @@
+﻿@model IEnumerable<EcommerceProject2.Models.Order_Table>
+@{
+    ViewBag.Title = "MyOrders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>MyOrders</h2>
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Order Date</th>
+                <th>Product</th>
+                <th>Product Name</th>
+                <th>Size</th>
+                <th>Amount</th>
+                <th>Total</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.Order_date</td>
+                    <td><img class="card-img-top" src="../@order.Products.image" alt="@order.Products.Product_name" height="75"></td>
+                    <td>@order.Products.Product_name</td>
+                    <td>@order.size</td>
+                    <td>@order.amount</td>
+                    <td>@order.Total</td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>You don't have any orders yet.</p>
+}
+
+

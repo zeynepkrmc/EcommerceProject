@@ -1,0 +1,80 @@
+﻿@using EcommerceProject2.Models
+@model IEnumerable<Coupons>
+@{
+    ViewBag.Title = "Coupons";
+}
+
+
+<html>
+
+<head>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: center;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <h1 style="text-align:center">Coupons List</h1>
+
+    <table>
+        <tr>
+            <th>CouponID</th>
+            <th>Coupon Code</th>
+            <th>Discount Amount</th>
+            <th>Is Active</th>
+            <th>Admin Name</th>
+            <th>Actions</th>
+            <th>Add Coupon</th>
+
+
+
+        </tr>
+        @foreach (var item in (IEnumerable<Coupons>)TempData["Coupon"])
+        {
+            <tr>
+                <td>@item.Coupon_id</td>
+                <td>@item.Coupon_Code</td>
+
+                <td>@item.Discount</td>
+                <td>@item.IsActive</td>
+                <td>@item.Admin.Admin_name</td>
+                <td>
+                    @if (item.IsActive)
+                    {
+                        <a href="@Url.Action("DeactivateCoupon", "Admin", new { couponId = item.Coupon_id })">Deactivate</a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("ActivateCoupon", "Admin", new { couponId = item.Coupon_id })">Activate</a>
+                    }
+                </td>
+                <td></td>
+
+            </tr>
+        }
+         <input type="button" onclick="window.location.href='@Url.Action("AddCoupons", "Admin")'" id="button" value="Add Coupons" class="btn btn-primary" />
+
+    </table>
+
+</body>
+</html>
+
+
+
+

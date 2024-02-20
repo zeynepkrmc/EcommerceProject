@@ -1,0 +1,76 @@
+﻿@model EcommerceProject2.Models.Customer
+@{
+    ViewBag.Title = "UpdateProfile";
+}
+<body>
+    @using (Html.BeginForm("UpdateProfile", "Customer", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.HiddenFor(x => x.Customer_id) 
+
+        <div style="margin-bottom:295px">
+            <h2 style="margin-left:155px; font-size:35px;"><b>My Profile</b></h2>
+            <br />
+            <table class="tbl">
+                <tr>
+                    <th>
+                        <label style="font-size:18px">Customer Email: </label>
+                    </th>
+                    <td>
+                        @Html.TextBoxFor(x => x.Customer_Email, new { @class = "form-control", @placeholder = "type email" })
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label style="font-size:18px">First Name: </label>
+                    </th>
+                    <td>
+                        @Html.TextBoxFor(x => x.First_name, new { @class = "form-control", @placeholder = "type first name" })
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label style="font-size:18px">Last name: </label>
+                    </th>
+                    <td>
+                        @Html.TextBoxFor(x => x.Last_name, new { @class = "form-control", @placeholder = "type last name" })
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width:40%">
+                        <label style="font-size:17px">Password: </label>
+                    </th>
+                    <td>
+                        @Html.TextBoxFor(x => x.Password, new { @class = "form-control", @placeholder = "type password" })
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label style="font-size:18px">Phone: </label>
+                    </th>
+                    <td>
+                        @Html.TextBoxFor(x => x.Phone, new { @class = "form-control", @placeholder = "enter phone" })
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label style="font-size:18px">Address: </label>
+                    </th>
+                    <td>
+                        @Html.TextBoxFor(x => x.Address, new { @class = "form-control", @placeholder = "enter address" })
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <br />
+                        <input type="submit" value="Update" class="btn btn-danger" />
+                    </td>
+                    <td>
+                        <br />
+                        <button class="btn btn-warning" onclick="location.href='@Url.Action("Index", "Home")'; return false;">Cancel</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    }
+</body>
